@@ -1,0 +1,8 @@
+# Default ignored files
+/../../tasksflow /.idea/shelf/
+/../../tasksflow /.idea/workspace.xml
+# Editor-based HTTP Client requests
+/../../tasksflow /.idea/httpRequests/
+# Datasource local storage ignored files
+/../../tasksflow /.idea/dataSources/
+/../../tasksflow /.idea/dataSources.local.xml
