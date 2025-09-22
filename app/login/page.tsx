@@ -3,7 +3,7 @@
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-
+import googleIcon from './google-icon-logo.svg';
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
@@ -82,6 +82,11 @@ export default function LoginPage() {
               />
             </div>
           </div>
+          
+          <div className="flex justify-center bg-grey-100 dark:bg-gray-700 p-2 rounded-md cursor-pointer" onClick={() => signIn('google')}>
+            <button className="text-white">Login Google</button>
+          </div>
+
 
           <div className="flex items-center justify-between">
             <div className="text-sm">

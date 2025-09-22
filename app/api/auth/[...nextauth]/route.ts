@@ -1,10 +1,17 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import { PrismaClient } from "@prisma/client";
 import { compare } from 'bcryptjs';
-import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "@/lib/prisma";
+import NextAuth from "next-auth/next";
+import GoolgeProvider from "next-auth/providers/google";
+import { getServerSession } from "next-auth/next"
+import { withAuth } from "next-auth/middleware"
 
+interface signInerface {
+  provider: string;
+  email_verified?: boolean;
+  email?: string;
+}
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   session: {
@@ -14,6 +21,10 @@ export const authOptions: NextAuthOptions = {
     signIn: "/login",
   },
   providers: [
+    GoolgeProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -50,6 +61,12 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+     async signIn({ account, profile }) {
+      if (account.provider === "google") {
+        return profile.email_verified && profile.email.endsWith("@example.com")
+      }
+      return true // Do different verification for other providers that don't have `email_verified`
+    },
     async session({ token, session }) {
       if (token) {
         session.user.id = token.id;
